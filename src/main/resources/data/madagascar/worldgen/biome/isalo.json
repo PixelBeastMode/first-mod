@@ -105,34 +105,16 @@
                                   ],
                      "creature":  [
                                       {
-                                          "type":  "minecraft:sheep",
+                                          "type":  "minecraft:fox",
                                           "maxCount":  4,
-                                          "minCount":  4,
-                                          "weight":  12
+                                          "minCount":  2,
+                                          "weight":  30
                                       },
                                       {
-                                          "type":  "minecraft:pig",
-                                          "maxCount":  4,
-                                          "minCount":  4,
-                                          "weight":  10
-                                      },
-                                      {
-                                          "type":  "minecraft:chicken",
-                                          "maxCount":  4,
-                                          "minCount":  4,
-                                          "weight":  10
-                                      },
-                                      {
-                                          "type":  "minecraft:cow",
-                                          "maxCount":  4,
-                                          "minCount":  4,
-                                          "weight":  8
-                                      },
-                                      {
-                                          "type":  "minecraft:armadillo",
-                                          "maxCount":  2,
+                                          "type":  "minecraft:ocelot",
+                                          "maxCount":  1,
                                           "minCount":  1,
-                                          "weight":  6
+                                          "weight":  4
                                       }
                                   ],
                      "misc":  [

@@ -1,0 +1,10 @@
+{
+	"__comment": "Vanilla only allows animals on grass_block. Madagascar's surfaces are calcite, red sand, sand and laterite, so zebu and fossa need these too.",
+	"replace": false,
+	"values": [
+		"minecraft:calcite",
+		"minecraft:red_sand",
+		"minecraft:sand",
+		"minecraft:terracotta"
+	]
+}
