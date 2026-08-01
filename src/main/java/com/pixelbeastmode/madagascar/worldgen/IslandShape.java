@@ -30,6 +30,13 @@ public final class IslandShape {
 	/** Between SEA_LEVEL and this, we are on the coastal fringe. */
 	private static final float BEACH_EDGE = 0.62f;
 
+	/**
+	 * Where the central plateau's axis sits across the island, 0 being the west
+	 * coast and 1 the east. Madagascar's is east of centre, which is why the
+	 * eastern escarpment is steep and the western plains are broad.
+	 */
+	private static final float SPINE_ACROSS = 0.66f;
+
 	private static final IslandShape INSTANCE = load();
 
 	private final int width;
@@ -83,6 +90,46 @@ public final class IslandShape {
 			rowWest[y] = west;
 			rowEast[y] = east;
 		}
+
+		// Rows off the ends of the island have no land at all. Carry the nearest
+		// real extent into them so interpolation never meets a -1.
+		for (int y = 1; y < height; y++) {
+			if (rowWest[y] < 0) {
+				rowWest[y] = rowWest[y - 1];
+				rowEast[y] = rowEast[y - 1];
+			}
+		}
+		for (int y = height - 2; y >= 0; y--) {
+			if (rowWest[y] < 0) {
+				rowWest[y] = rowWest[y + 1];
+				rowEast[y] = rowEast[y + 1];
+			}
+		}
+	}
+
+	/**
+	 * The island's west and east edge at a fractional row.
+	 * <p>
+	 * These interpolate between rows on purpose. Reading {@code rowWest[(int) pz]}
+	 * directly quantises the edges to whole mask rows, which is 14 blocks, so the
+	 * across-island position jumps every 14 blocks and the terrain grows hard
+	 * terraces and straight creases running across the hillsides.
+	 */
+	private float westAt(float pz) {
+		return interpolateRow(rowWest, pz);
+	}
+
+	private float eastAt(float pz) {
+		return interpolateRow(rowEast, pz);
+	}
+
+	private float interpolateRow(int[] rows, float pz) {
+		float clamped = Math.max(0.0f, Math.min(pz, height - 1.0f));
+		int row = (int) clamped;
+		int next = Math.min(row + 1, height - 1);
+		// Eased for the same reason as sample(): a plain lerp is continuous but
+		// its slope still jumps at each row, and that slope drives the terrain.
+		return lerp(rows[row], rows[next], smoothstep(clamped - row));
 	}
 
 	private static IslandShape load() {
@@ -150,9 +197,8 @@ public final class IslandShape {
 			return Region.BEACH;
 		}
 
-		int row = clamp((int) pz, 0, height - 1);
-		int west = rowWest[row];
-		int east = rowEast[row];
+		float west = westAt(pz);
+		float east = eastAt(pz);
 
 		// 0 at the west coast, 1 at the east coast, on this row.
 		float across = east > west ? (px - west) / (east - west) : 0.5f;
@@ -184,6 +230,70 @@ public final class IslandShape {
 			return Region.DRY_WEST;
 		}
 		return Region.HIGHLANDS;
+	}
+
+	/**
+	 * Large-scale elevation, 0 at the coastal plains up to 1 on the highest
+	 * massifs. This is what makes the island mountainous rather than a flat
+	 * green table - hill noise alone only adds small bumps to one base height.
+	 * <p>
+	 * Madagascar's plateau runs the length of the island but sits east of
+	 * centre. It falls away sharply to the east coast, which is why that coast
+	 * is a narrow strip, and slopes gently west into the plains.
+	 */
+	public float spineElevation(int blockX, int blockZ) {
+		float px = pixelX(blockX);
+		float pz = pixelZ(blockZ);
+
+		float west = westAt(pz);
+		float east = eastAt(pz);
+		if (east <= west) {
+			return 0.0f;
+		}
+
+		// Clamped because a point can read as land while sitting just outside the
+		// interpolated row extents. A negative value here would reach Math.pow
+		// below and return NaN, which the chunk generator turns into missing
+		// terrain rather than an error.
+		float across = clamp01((px - west) / (east - west));
+		float down = pz / height;
+
+		// The two sides of the plateau behave very differently.
+		float profile;
+		if (across <= SPINE_ACROSS) {
+			// West: broad low plains that only climb near the plateau. The power
+			// curve is what keeps the western third genuinely lowland.
+			profile = (float) Math.pow(across / SPINE_ACROSS, 1.8);
+		} else {
+			// East: the escarpment. High right up to a narrow strip, then a plunge
+			// to the coast - which is why the eastern coastal plain is so thin.
+			profile = smoothstep(clamp01((1.0f - across) / 0.20f));
+		}
+
+		// The plateau tapers away towards both tips of the island.
+		float tips = clamp01(Math.min(down / 0.12f, (1.0f - down) / 0.18f));
+		profile *= smoothstep(tips);
+
+		// Three real massifs standing above the plateau.
+		float massif = blob(across, down, 0.60f, 0.12f, 0.20f, 0.06f);      // Tsaratanana, north
+		massif = Math.max(massif, blob(across, down, 0.62f, 0.50f, 0.18f, 0.07f)); // Ankaratra, centre
+		massif = Math.max(massif, blob(across, down, 0.66f, 0.72f, 0.16f, 0.05f)); // Andringitra, south
+
+		// The plateau is deliberately well below the massifs, so the peaks read as
+		// mountains rather than as bumps on an already-high table.
+		return clamp01(profile * 0.55f + massif * 0.55f);
+	}
+
+	/** 1 at the centre of an elliptical patch, easing to 0 at its edge. */
+	private static float blob(float across, float down, float centreAcross, float centreDown,
+			float radiusAcross, float radiusDown) {
+		float dx = (across - centreAcross) / radiusAcross;
+		float dz = (down - centreDown) / radiusDown;
+		float distSq = dx * dx + dz * dz;
+		if (distSq >= 1.0f) {
+			return 0.0f;
+		}
+		return smoothstep(1.0f - (float) Math.sqrt(distSq));
 	}
 
 	/**
@@ -241,12 +351,19 @@ public final class IslandShape {
 		return (float) blockZ / BLOCKS_PER_PIXEL + height * 0.5f;
 	}
 
-	/** Bilinear sample so the coastline is smooth rather than 14-block stair steps. */
+	/**
+	 * Samples the mask smoothly.
+	 * <p>
+	 * The fractions are eased before interpolating. Plain bilinear is continuous
+	 * but its slope is not: the gradient jumps at every cell edge, which shows up
+	 * in terrain as a crease every 14 blocks. Easing flattens the slope at the
+	 * edges so neighbouring cells meet without a seam.
+	 */
 	private float sample(float px, float pz) {
 		int x0 = (int) Math.floor(px);
 		int z0 = (int) Math.floor(pz);
-		float fx = px - x0;
-		float fz = pz - z0;
+		float fx = smoothstep(px - x0);
+		float fz = smoothstep(pz - z0);
 
 		float topLeft = at(x0, z0);
 		float topRight = at(x0 + 1, z0);
@@ -266,7 +383,15 @@ public final class IslandShape {
 		return land[z * width + x];
 	}
 
-	private static int clamp(int value, int min, int max) {
-		return value < min ? min : Math.min(value, max);
+	private static float clamp01(float value) {
+		if (value < 0.0f) {
+			return 0.0f;
+		}
+		return Math.min(value, 1.0f);
+	}
+
+	/** Eases both ends of a 0..1 ramp so slopes meet flat ground smoothly. */
+	private static float smoothstep(float t) {
+		return t * t * (3.0f - 2.0f * t);
 	}
 }

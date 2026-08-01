@@ -33,8 +33,15 @@ public final class MadagascarTerrain implements DensityFunction.SimpleFunction {
 	private static final double SHORELINE = -0.344;  // exactly sea level, y=63
 	private static final double INLAND = -0.16;      // base land height near y=80
 
-	/** How tall the hills are. 0.12 gives roughly a 23-block spread. */
-	private static final double HILL_HEIGHT = 0.12;
+	/** How tall the local hills are. 0.18 gives roughly a 35-block spread. */
+	private static final double HILL_HEIGHT = 0.18;
+
+	/**
+	 * How far the central plateau and its massifs rise above the coastal plains.
+	 * 0.85 puts the plateau near y=120 and the highest peaks near y=180.
+	 * This is the main control for how mountainous the island feels.
+	 */
+	private static final double MOUNTAIN_HEIGHT = 0.85;
 
 	/** Mask value that counts as the waterline. Must match IslandShape's sea level. */
 	private static final float SEA = 0.5f;
@@ -62,8 +69,14 @@ public final class MadagascarTerrain implements DensityFunction.SimpleFunction {
 		double t = smoothstep(Math.min((land - SEA) / INLAND_RAMP, 1.0));
 		double height = lerp(SHORELINE, INLAND, t);
 
-		// Hills fade in as we move inland, so beaches stay flat and walkable.
-		return height + IslandShape.get().terrainNoise(blockX, blockZ) * HILL_HEIGHT * t;
+		IslandShape shape = IslandShape.get();
+
+		// The plateau and massifs. Everything is scaled by t so the coast stays
+		// at sea level rather than the mountains running straight into the water.
+		height += shape.spineElevation(blockX, blockZ) * MOUNTAIN_HEIGHT * t;
+
+		// Local hills on top.
+		return height + shape.terrainNoise(blockX, blockZ) * HILL_HEIGHT * t;
 	}
 
 	/**
@@ -77,7 +90,7 @@ public final class MadagascarTerrain implements DensityFunction.SimpleFunction {
 
 	@Override
 	public double maxValue() {
-		return INLAND + HILL_HEIGHT;
+		return INLAND + MOUNTAIN_HEIGHT + HILL_HEIGHT;
 	}
 
 	@Override
