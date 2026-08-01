@@ -10,13 +10,17 @@ $modAssets = Join-Path $PSScriptRoot '..\src\main\resources\assets\minecraft\tex
 # shading (luminance) but replace the hue with a target tint. That preserves
 # every pixel's role in the UV layout, so the model still reads correctly.
 $jobs = @(
-    # Zebu: Madagascar's humped cattle are pale fawn to light grey.
-    @{ src='cow/cow_temperate.png';      tint=@(216,205,186); gain=1.10 },
-    @{ src='cow/cow_warm.png';           tint=@(216,205,186); gain=1.10 },
-    @{ src='cow/cow_cold.png';           tint=@(216,205,186); gain=1.10 },
-    @{ src='cow/cow_temperate_baby.png'; tint=@(216,205,186); gain=1.10 },
-    @{ src='cow/cow_warm_baby.png';      tint=@(216,205,186); gain=1.10 },
-    @{ src='cow/cow_cold_baby.png';      tint=@(216,205,186); gain=1.10 },
+    # Zebu: a gradient rather than a single tint. Colourising with one colour can
+    # only ever produce shades of that colour, which came out flat and albino.
+    # Mapping dark pixels to charcoal and light pixels to cream keeps the black,
+    # white and grey range the real animal has. gamma < 1 pushes the midtones
+    # towards the pale end, because a zebu is mostly light with darker points.
+    @{ src='cow/cow_temperate.png';      dark=@(74,72,70); light=@(242,238,229); gamma=0.72 },
+    @{ src='cow/cow_warm.png';           dark=@(74,72,70); light=@(242,238,229); gamma=0.72 },
+    @{ src='cow/cow_cold.png';           dark=@(74,72,70); light=@(242,238,229); gamma=0.72 },
+    @{ src='cow/cow_temperate_baby.png'; dark=@(74,72,70); light=@(242,238,229); gamma=0.72 },
+    @{ src='cow/cow_warm_baby.png';      dark=@(74,72,70); light=@(242,238,229); gamma=0.72 },
+    @{ src='cow/cow_cold_baby.png';      dark=@(74,72,70); light=@(242,238,229); gamma=0.72 },
 
     # Fossa: uniform rich reddish-brown. The ocelot's spots survive as subtle
     # tonal variation, which is close enough to the real animal's coat.
@@ -50,11 +54,21 @@ foreach ($job in $jobs) {
 
             # Perceived brightness of the original pixel, 0..1.
             $lum = (0.299 * $p.R + 0.587 * $p.G + 0.114 * $p.B) / 255.0
-            $lum = [Math]::Min(1.0, $lum * $job.gain)
 
-            $r = [Math]::Min(255, [int][Math]::Round($job.tint[0] * $lum))
-            $g = [Math]::Min(255, [int][Math]::Round($job.tint[1] * $lum))
-            $b = [Math]::Min(255, [int][Math]::Round($job.tint[2] * $lum))
+            if ($job.ContainsKey('dark')) {
+                # Gradient mode: interpolate between two colours across the
+                # brightness range, so the result keeps a real dark-to-light spread.
+                $t = [Math]::Pow($lum, $job.gamma)
+                $r = [int][Math]::Round($job.dark[0] + ($job.light[0] - $job.dark[0]) * $t)
+                $g = [int][Math]::Round($job.dark[1] + ($job.light[1] - $job.dark[1]) * $t)
+                $b = [int][Math]::Round($job.dark[2] + ($job.light[2] - $job.dark[2]) * $t)
+            } else {
+                # Tint mode: keep the original shading, replace the hue.
+                $lum = [Math]::Min(1.0, $lum * $job.gain)
+                $r = [Math]::Min(255, [int][Math]::Round($job.tint[0] * $lum))
+                $g = [Math]::Min(255, [int][Math]::Round($job.tint[1] * $lum))
+                $b = [Math]::Min(255, [int][Math]::Round($job.tint[2] * $lum))
+            }
             $bmp.SetPixel($x, $y, [System.Drawing.Color]::FromArgb($p.A, $r, $g, $b))
         }
     }
