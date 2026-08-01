@@ -72,6 +72,7 @@
 				}
 			},
 			{
+				"__comment": "The single top block of the ground.",
 				"type": "minecraft:condition",
 				"if_true": {
 					"type": "minecraft:stone_depth",
@@ -84,6 +85,63 @@
 					"type": "minecraft:sequence",
 					"sequence": [
 						{
+							"__comment": "Tsingy is bare limestone karst.",
+							"type": "minecraft:condition",
+							"if_true": {
+								"type": "minecraft:biome",
+								"biome_is": ["madagascar:tsingy"]
+							},
+							"then_run": {
+								"type": "minecraft:block",
+								"result_state": { "Name": "minecraft:calcite" }
+							}
+						},
+						{
+							"__comment": "Isalo is eroded sandstone.",
+							"type": "minecraft:condition",
+							"if_true": {
+								"type": "minecraft:biome",
+								"biome_is": ["madagascar:isalo"]
+							},
+							"then_run": {
+								"type": "minecraft:block",
+								"result_state": { "Name": "minecraft:red_sand" }
+							}
+						},
+						{
+							"__comment": "Arid south, the coastal fringe, and the sea floor.",
+							"type": "minecraft:condition",
+							"if_true": {
+								"type": "minecraft:biome",
+								"biome_is": [
+									"madagascar:spiny_forest",
+									"madagascar:coral_coast",
+									"madagascar:madagascar_reef"
+								]
+							},
+							"then_run": {
+								"type": "minecraft:block",
+								"result_state": { "Name": "minecraft:sand" }
+							}
+						},
+						{
+							"__comment": "Bare laterite on steep highland slopes - the start of the erosion scars Madagascar is known for.",
+							"type": "minecraft:condition",
+							"if_true": {
+								"type": "minecraft:biome",
+								"biome_is": ["madagascar:central_highlands"]
+							},
+							"then_run": {
+								"type": "minecraft:condition",
+								"if_true": { "type": "minecraft:steep" },
+								"then_run": {
+									"type": "minecraft:block",
+									"result_state": { "Name": "minecraft:terracotta" }
+								}
+							}
+						},
+						{
+							"__comment": "Everything else: grass above the waterline, dirt below it.",
 							"type": "minecraft:condition",
 							"if_true": {
 								"type": "minecraft:water",
@@ -95,22 +153,19 @@
 								"type": "minecraft:block",
 								"result_state": {
 									"Name": "minecraft:grass_block",
-									"Properties": {
-										"snowy": "false"
-									}
+									"Properties": { "snowy": "false" }
 								}
 							}
 						},
 						{
 							"type": "minecraft:block",
-							"result_state": {
-								"Name": "minecraft:sand"
-							}
+							"result_state": { "Name": "minecraft:dirt" }
 						}
 					]
 				}
 			},
 			{
+				"__comment": "The few blocks directly beneath the surface.",
 				"type": "minecraft:condition",
 				"if_true": {
 					"type": "minecraft:stone_depth",
@@ -120,10 +175,62 @@
 					"secondary_depth_range": 0
 				},
 				"then_run": {
-					"type": "minecraft:block",
-					"result_state": {
-						"Name": "minecraft:dirt"
-					}
+					"type": "minecraft:sequence",
+					"sequence": [
+						{
+							"type": "minecraft:condition",
+							"if_true": {
+								"type": "minecraft:biome",
+								"biome_is": ["madagascar:tsingy"]
+							},
+							"then_run": {
+								"type": "minecraft:block",
+								"result_state": { "Name": "minecraft:calcite" }
+							}
+						},
+						{
+							"type": "minecraft:condition",
+							"if_true": {
+								"type": "minecraft:biome",
+								"biome_is": ["madagascar:isalo"]
+							},
+							"then_run": {
+								"type": "minecraft:block",
+								"result_state": { "Name": "minecraft:red_sandstone" }
+							}
+						},
+						{
+							"type": "minecraft:condition",
+							"if_true": {
+								"type": "minecraft:biome",
+								"biome_is": [
+									"madagascar:spiny_forest",
+									"madagascar:coral_coast",
+									"madagascar:madagascar_reef"
+								]
+							},
+							"then_run": {
+								"type": "minecraft:block",
+								"result_state": { "Name": "minecraft:sandstone" }
+							}
+						},
+						{
+							"__comment": "The red earth that gives Madagascar its nickname, the Great Red Island.",
+							"type": "minecraft:condition",
+							"if_true": {
+								"type": "minecraft:biome",
+								"biome_is": ["madagascar:central_highlands"]
+							},
+							"then_run": {
+								"type": "minecraft:block",
+								"result_state": { "Name": "minecraft:terracotta" }
+							}
+						},
+						{
+							"type": "minecraft:block",
+							"result_state": { "Name": "minecraft:dirt" }
+						}
+					]
 				}
 			}
 		]

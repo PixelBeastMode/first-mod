@@ -7,14 +7,14 @@
 				"settings": "madagascar:madagascar",
 				"biome_source": {
 					"type": "madagascar:island",
-					"ocean": "minecraft:warm_ocean",
-					"beach": "minecraft:beach",
-					"rainforest": "minecraft:jungle",
-					"highlands": "minecraft:savanna_plateau",
-					"dry_west": "minecraft:savanna",
-					"spiny_south": "minecraft:badlands",
-					"tsingy": "minecraft:stony_peaks",
-					"isalo": "minecraft:eroded_badlands"
+					"ocean": "madagascar:madagascar_reef",
+					"beach": "madagascar:coral_coast",
+					"rainforest": "madagascar:eastern_rainforest",
+					"highlands": "madagascar:central_highlands",
+					"dry_west": "madagascar:menabe_dry_forest",
+					"spiny_south": "madagascar:spiny_forest",
+					"tsingy": "madagascar:tsingy",
+					"isalo": "madagascar:isalo"
 				}
 			}
 		},
