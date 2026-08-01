@@ -4,7 +4,7 @@
 			"type": "minecraft:overworld",
 			"generator": {
 				"type": "minecraft:noise",
-				"settings": "minecraft:overworld",
+				"settings": "madagascar:madagascar",
 				"biome_source": {
 					"type": "madagascar:island",
 					"ocean": "minecraft:warm_ocean",

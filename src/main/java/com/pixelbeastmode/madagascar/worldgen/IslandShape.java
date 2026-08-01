@@ -186,6 +186,19 @@ public final class IslandShape {
 		return Region.HIGHLANDS;
 	}
 
+	/**
+	 * Rolling hill detail for the terrain, in the range -1..1.
+	 * Three octaves, so hills have both broad shape and smaller bumps.
+	 */
+	public float terrainNoise(int blockX, int blockZ) {
+		float x = blockX * 0.006f;
+		float z = blockZ * 0.006f;
+		float total = noise(x, z, 11);
+		total += noise(x * 2.3f, z * 2.3f, 12) * 0.5f;
+		total += noise(x * 5.1f, z * 5.1f, 13) * 0.25f;
+		return total / 1.75f;
+	}
+
 	/** Elliptical patch test, so landmarks are blobs rather than rectangles. */
 	private static boolean inBlob(float across, float down, float centreAcross, float centreDown,
 			float radiusAcross, float radiusDown) {

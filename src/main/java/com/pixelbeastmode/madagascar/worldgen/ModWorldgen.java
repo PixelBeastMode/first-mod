@@ -20,6 +20,10 @@ public final class ModWorldgen {
 	 */
 	public static void initialize() {
 		Registry.register(BuiltInRegistries.BIOME_SOURCE, MadagascarMod.id("island"), MadagascarBiomeSource.CODEC);
+
+		// Lets the noise settings say {"type": "madagascar:island"} to shape terrain.
+		Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE, MadagascarMod.id("island"),
+			MadagascarTerrain.CODEC.codec());
 	}
 
 	private ModWorldgen() {
