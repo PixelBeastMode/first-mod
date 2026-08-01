@@ -3,7 +3,9 @@
 	"package": "com.pixelbeastmode.madagascar.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"CowVariantMixin",
+		"FrogPoisonMixin"
 	],
 	"client": [
 		"client.CowModelMixin"

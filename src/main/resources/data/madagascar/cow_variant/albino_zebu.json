@@ -1,0 +1,6 @@
+{
+	"__comment": "spawn_conditions is empty on purpose. Vanilla only offers biome, structure and moon-brightness conditions, none of which can express 'one in fifty', so this variant can never be chosen naturally. CowVariantMixin assigns it instead.",
+	"asset_id": "madagascar:entity/cow/albino_zebu",
+	"baby_asset_id": "madagascar:entity/cow/albino_zebu_baby",
+	"spawn_conditions": []
+}
