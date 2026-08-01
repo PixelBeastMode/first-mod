@@ -7,8 +7,14 @@
 				"settings": "minecraft:overworld",
 				"biome_source": {
 					"type": "madagascar:island",
-					"land": "minecraft:jungle",
-					"ocean": "minecraft:warm_ocean"
+					"ocean": "minecraft:warm_ocean",
+					"beach": "minecraft:beach",
+					"rainforest": "minecraft:jungle",
+					"highlands": "minecraft:savanna_plateau",
+					"dry_west": "minecraft:savanna",
+					"spiny_south": "minecraft:badlands",
+					"tsingy": "minecraft:stony_peaks",
+					"isalo": "minecraft:eroded_badlands"
 				}
 			}
 		},
