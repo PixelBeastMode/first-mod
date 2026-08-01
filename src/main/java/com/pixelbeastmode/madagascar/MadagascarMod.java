@@ -1,6 +1,6 @@
-package com.pixelbeastmode.test;
+package com.pixelbeastmode.madagascar;
 
-import com.pixelbeastmode.test.item.ModItems;
+import com.pixelbeastmode.madagascar.item.ModItems;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -9,8 +9,8 @@ import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TestMod implements ModInitializer {
-	public static final String MOD_ID = "test-mod";
+public class MadagascarMod implements ModInitializer {
+	public static final String MOD_ID = "madagascar";
 
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
@@ -23,7 +23,7 @@ public class TestMod implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		LOGGER.info("Hello Fabric world!");
+		LOGGER.info("Madagascar loading.");
 
 		// Registering content is the main job of onInitialize().
 		// Every new category of content gets its own initialize() call here.

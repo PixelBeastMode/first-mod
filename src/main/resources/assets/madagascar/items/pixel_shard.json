@@ -1,6 +1,6 @@
 {
 	"model": {
 		"type": "minecraft:model",
-		"model": "test-mod:item/pixel_shard"
+		"model": "madagascar:item/pixel_shard"
 	}
 }

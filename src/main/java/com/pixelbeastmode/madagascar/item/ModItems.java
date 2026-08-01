@@ -1,6 +1,6 @@
-package com.pixelbeastmode.test.item;
+package com.pixelbeastmode.madagascar.item;
 
-import com.pixelbeastmode.test.TestMod;
+import com.pixelbeastmode.madagascar.MadagascarMod;
 
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 
@@ -30,13 +30,13 @@ public final class ModItems {
 	/**
 	 * Registers a single item.
 	 *
-	 * @param name    the item's path, e.g. "pixel_shard" -> "test-mod:pixel_shard"
+	 * @param name    the item's path, e.g. "pixel_shard" -> "madagascar:pixel_shard"
 	 * @param factory constructor for the item class, usually Item::new
 	 * @param props   configuration for the item
 	 */
 	private static Item register(String name, Function<Item.Properties, Item> factory, Item.Properties props) {
 		// A ResourceKey is a typed, namespaced ID: "which registry" + "which entry".
-		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, TestMod.id(name));
+		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, MadagascarMod.id(name));
 
 		// Since 1.21.2 the item must know its own ID before it is constructed,
 		// so the key goes into the properties first.
@@ -46,7 +46,7 @@ public final class ModItems {
 	}
 
 	/**
-	 * Called from {@link TestMod#onInitialize()}.
+	 * Called from {@link MadagascarMod#onInitialize()}.
 	 * <p>
 	 * Java only loads a class the first time something touches it. Without this
 	 * call, the static fields above would never run and no items would exist.
