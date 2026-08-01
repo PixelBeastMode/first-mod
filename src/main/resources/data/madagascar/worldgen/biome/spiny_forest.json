@@ -81,7 +81,8 @@
                          "minecraft:patch_sugar_cane_badlands",
                          "minecraft:patch_pumpkin",
                          "minecraft:patch_cactus_decorated",
-                         "minecraft:patch_firefly_bush_near_water"
+                         "minecraft:patch_firefly_bush_near_water",
+                         "madagascar:octopus_tree"
                      ],
                      [
                          "minecraft:freeze_top_layer"
