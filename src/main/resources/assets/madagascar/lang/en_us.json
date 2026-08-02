@@ -1,4 +1,20 @@
 {
 	"item.madagascar.pixel_shard": "Pixel Shard",
-	"generator.madagascar.madagascar": "Madagascar"
+	"generator.madagascar.madagascar": "Madagascar",
+
+	"block.madagascar.cooking_pot": "Cooking Pot",
+	"block.madagascar.herb_table": "Herb Table",
+	"block.madagascar.drying_rack": "Vanilla Drying Rack",
+	"block.madagascar.vanilla_vine": "Vanilla Orchid",
+	"item.madagascar.vanilla_bean": "Vanilla Bean",
+	"item.madagascar.vanilla_pod": "Vanilla Pod",
+
+	"entity.madagascar.villager.mpahandro": "Mpahandro",
+	"entity.madagascar.villager.ombiasy": "Ombiasy",
+	"entity.madagascar.villager.vanilla_grower": "Vanilla Grower",
+
+	"entity.minecraft.cow": "Zebu",
+	"entity.minecraft.ocelot": "Fossa",
+	"entity.minecraft.fox": "Ring-tailed Lemur",
+	"entity.minecraft.frog": "Golden Mantella"
 }

@@ -1,0 +1,8 @@
+{
+    "parent":  "minecraft:block/cube_bottom_top",
+    "textures":  {
+                     "top":  "madagascar:block/cooking_pot_top",
+                     "bottom":  "madagascar:block/cooking_pot_side",
+                     "side":  "madagascar:block/cooking_pot_side"
+                 }
+}

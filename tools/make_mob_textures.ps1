@@ -39,6 +39,15 @@ $jobs = @(
     @{ src='frog/frog_temperate.png'; dark=@(120,88,8); light=@(238,198,36); gamma=0.85; mantella=$true },
     @{ src='frog/frog_cold.png';      dark=@(120,88,8); light=@(238,198,36); gamma=0.85; mantella=$true },
 
+    # Villager professions. Based on vanilla professions that have no .mcmeta
+    # beside them, so there is no companion metadata to copy across.
+    @{ src='villager/profession/leatherworker.png'; tint=@(206,102,72); gain=1.05;
+       outAsset='madagascar/textures/entity/villager/profession/mpahandro.png' },
+    @{ src='villager/profession/cleric.png';        tint=@(150,116,196); gain=1.05;
+       outAsset='madagascar/textures/entity/villager/profession/ombiasy.png' },
+    @{ src='villager/profession/mason.png';         tint=@(146,174,94); gain=1.05;
+       outAsset='madagascar/textures/entity/villager/profession/vanilla_grower.png' },
+
     # Albino zebu: a rare variant, so it lives in our own namespace rather than
     # overriding a vanilla texture. Near-white with only the faintest shading,
     # and pink eyes.

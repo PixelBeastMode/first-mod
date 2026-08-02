@@ -1,0 +1,16 @@
+{
+    "variants":  {
+                     "age=0":  {
+                                   "model":  "madagascar:block/vanilla_vine_stage0"
+                               },
+                     "age=1":  {
+                                   "model":  "madagascar:block/vanilla_vine_stage1"
+                               },
+                     "age=2":  {
+                                   "model":  "madagascar:block/vanilla_vine_stage2"
+                               },
+                     "age=3":  {
+                                   "model":  "madagascar:block/vanilla_vine_stage3"
+                               }
+                 }
+}

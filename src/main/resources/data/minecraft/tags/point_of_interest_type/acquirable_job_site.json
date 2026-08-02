@@ -1,0 +1,9 @@
+{
+	"__comment": "Without this, villagers can see the workstations but will never take a job at one. The professions themselves are registered in ModVillagers.",
+	"replace": false,
+	"values": [
+		"madagascar:mpahandro",
+		"madagascar:ombiasy",
+		"madagascar:vanilla_grower"
+	]
+}

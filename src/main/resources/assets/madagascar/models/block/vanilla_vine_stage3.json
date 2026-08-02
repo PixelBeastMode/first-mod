@@ -1,0 +1,6 @@
+{
+    "parent":  "minecraft:block/crop",
+    "textures":  {
+                     "crop":  "madagascar:block/vanilla_vine_stage3"
+                 }
+}

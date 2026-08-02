@@ -1,6 +1,8 @@
 package com.pixelbeastmode.madagascar;
 
+import com.pixelbeastmode.madagascar.block.ModBlocks;
 import com.pixelbeastmode.madagascar.item.ModItems;
+import com.pixelbeastmode.madagascar.village.ModVillagers;
 import com.pixelbeastmode.madagascar.worldgen.ModWorldgen;
 
 import net.fabricmc.api.ModInitializer;
@@ -28,8 +30,10 @@ public class MadagascarMod implements ModInitializer {
 
 		// Registering content is the main job of onInitialize().
 		// Every new category of content gets its own initialize() call here.
+		ModBlocks.initialize();
 		ModItems.initialize();
 		ModWorldgen.initialize();
+		ModVillagers.initialize();
 	}
 
 	public static Identifier id(String path) {

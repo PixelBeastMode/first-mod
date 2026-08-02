@@ -1,6 +1,7 @@
 package com.pixelbeastmode.madagascar.item;
 
 import com.pixelbeastmode.madagascar.MadagascarMod;
+import com.pixelbeastmode.madagascar.block.ModBlocks;
 
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 
@@ -8,6 +9,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 
@@ -26,6 +28,13 @@ public final class ModItems {
 	//   new Item.Properties().rarity(Rarity.UNCOMMON)   -> yellow name in tooltips
 	//   new Item.Properties().fireResistant()           -> survives lava
 	public static final Item PIXEL_SHARD = register("pixel_shard", Item::new, new Item.Properties());
+
+	/** Plants the vanilla orchid, the way wheat seeds plant wheat. */
+	public static final Item VANILLA_BEAN = register("vanilla_bean",
+		properties -> new BlockItem(ModBlocks.VANILLA_VINE, properties), new Item.Properties());
+
+	/** The cured pod, harvested from a vine you pollinated yourself. */
+	public static final Item VANILLA_POD = register("vanilla_pod", Item::new, new Item.Properties());
 
 	/**
 	 * Registers a single item.
@@ -55,7 +64,14 @@ public final class ModItems {
 		// Put the item in the "Ingredients" tab of the creative inventory.
 		// Other options: CreativeModeTabs.TOOLS_AND_UTILITIES, COMBAT, FOOD_AND_DRINKS, ...
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS)
-			.register(tab -> tab.accept(PIXEL_SHARD));
+			.register(tab -> {
+				tab.accept(PIXEL_SHARD);
+				tab.accept(VANILLA_POD);
+			});
+
+		// Seeds live with the other farming items.
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS)
+			.register(tab -> tab.accept(VANILLA_BEAN));
 	}
 
 	private ModItems() {
